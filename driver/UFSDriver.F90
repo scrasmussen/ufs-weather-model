@@ -48,6 +48,9 @@
 #ifdef FRONT_FV3
       use FRONT_FV3,        only: FV3_SS   => SetServices
 #endif
+#ifdef FRONT_MPAS
+      use FRONT_MPAS,       only: MPAS_SS  => SetServices
+#endif
 #ifdef FRONT_CDEPS_DATM
       use FRONT_CDEPS_DATM, only: DATM_SS  => SetServices
 #endif
@@ -81,7 +84,7 @@
 #endif
 #ifdef FRONT_LM4
       use FRONT_LM4,        only: LM4_SS  => SetServices
-#endif      
+#endif
 #ifdef FRONT_NOAHMP
       use FRONT_NOAHMP,     only: NOAHMP_SS  => SetServices
 #endif
@@ -370,6 +373,14 @@
             found_comp = .true.
           end if
 #endif
+#ifdef FRONT_MPAS
+!          if (trim(model) == "mpas") then
+!            call NUOPC_DriverAddComp(driver, trim(prefix), MPAS_SS, &
+!              info=info, petList=petList, comp=comp, rc=rc)
+!            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+!            found_comp = .true.
+!          end if
+#endif
 #if defined FRONT_CDEPS_DATM
           if (trim(model) == "datm" ) then
             !TODO: Remove bail code and pass info and SetVM to DriverAddComp
@@ -477,7 +488,7 @@
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
           end if
-#endif 
+#endif
 #ifdef FRONT_NOAHMP
           if (trim(model) == "noahmp") then
             call NUOPC_DriverAddComp(driver, trim(prefix), NOAHMP_SS, &

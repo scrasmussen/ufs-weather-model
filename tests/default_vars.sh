@@ -510,6 +510,7 @@ export POSTXCONFIG=postxconfig-NT-gfs.txt
 export POSTXCONFIG_FH00=postxconfig-NT-gfs_FH00.txt
 
 export FV3=true
+export MPAS=true
 export S2S=false
 export HAFS=false
 export AQM=false
@@ -1389,6 +1390,7 @@ export_cmeps() {
 export_cpl ()
 {
 export FV3=true
+export MPAS=true
 export S2S=true
 export HAFS=false
 export AQM=false
@@ -1571,6 +1573,7 @@ export_35d_run ()
 export_datm_cdeps ()
 {
   export FV3=false
+  export MPAS=true
   export S2S=false
   export HAFS=false
   export AQM=false
@@ -1649,6 +1652,7 @@ export_datm_cdeps ()
 export_hafs_datm_cdeps ()
 {
   export FV3=false
+  export MPAS=true
   export S2S=false
   export HAFS=true
   export AQM=false
@@ -1669,6 +1673,7 @@ export_hafs_datm_cdeps ()
 export_hafs_docn_cdeps ()
 {
   export FV3=true
+  export MPAS=true
   export S2S=false
   export HAFS=true
   export AQM=false
@@ -1689,6 +1694,7 @@ export_hafs_docn_cdeps ()
 export_hafs_regional ()
 {
   export FV3=true
+  export MPAS=true
   export S2S=false
   export HAFS=true
   export AQM=false
@@ -1776,6 +1782,7 @@ export_hafs ()
 {
 export_fv3_v16
 export FV3=true
+export MPAS=true
 export S2S=false
 export HAFS=true
 export AQM=false
