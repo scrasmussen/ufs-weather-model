@@ -363,20 +363,6 @@ elif [[ ${MACHINE_ID} = derecho ]]; then
   export WPG_cpl_atmw_gdas=24
   export WAV_tasks_atmw_gdas=248
 
-elif [[ ${MACHINE_ID} = stampede ]]; then
-
-  echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
-  exit 1
-
-  # TPN_dflt=48 ; INPES_dflt=3 ; JNPES_dflt=8
-  # TPN_thrd=24 ; INPES_thrd=3 ; JNPES_thrd=4
-  # TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
-  # TPN_c768=20 ; INPES_c768=8 ; JNPES_c768=16
-  # TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
-
-  # TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
-  # THRD_cpl_atmw_gdas=4; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
-
 elif [[ ${MACHINE_ID} = noaacloud ]] ; then
 
     if [[ ${PW_CSP} == aws ]]; then
@@ -414,18 +400,6 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     export OCN_tasks_cpl_thrd=20
     export ICE_tasks_cpl_thrd=10
     export WAV_tasks_cpl_thrd=12
-
-elif [[ ${MACHINE_ID} = expanse ]]; then
-
-  echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
-  exit 1
-
-  # TPN_dflt=64 ; INPES_dflt=3 ; JNPES_dflt=8
-  # TPN_thrd=64 ; INPES_thrd=3 ; JNPES_thrd=4
-  # TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
-
-  # TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
-  # THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
 
 else
 
@@ -501,7 +475,6 @@ export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb'"
 export RF_CUTOFF=30.0
 export FAST_TAU_W_SEC=0.0
 
-export ATMRES=C96
 export TILEDFIX=.false.
 export DO_CA=.false.
 export CA_SGS=.false.
@@ -568,6 +541,7 @@ export OUTPUT_HISTORY=.true.
 export HISTORY_FILE_ON_NATIVE_GRID=.false.
 export WRITE_DOPOST=.false.
 export NUM_FILES=2
+export FV3ATM_OUTPUT_DIR="./"
 export FILENAME_BASE="'atm' 'sfc'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
@@ -796,6 +770,7 @@ export HWRF_SAMFDEEP=.false.
 export RAS=.false.
 export RANDOM_CLDS=.false.
 export CNVCLD=.true.
+export XR_CNVCLD=.false.
 export PROGSIGMA=.false.
 export BETASCU=8.0
 export BETAMCU=1.0
@@ -1021,6 +996,7 @@ export RST_BEG=${RUN_BEG}
 export RST_2_BEG=${RUN_BEG}
 export RST_END=${RUN_END}
 export RST_2_END=${RUN_END}
+export WW3_WLEV='F'
 export WW3_CUR='F'
 export WW3_ICE='F'
 export WW3_IC1='F'
@@ -1061,6 +1037,18 @@ export FNSNOC="'global_snoclim.1.875.grb'"
 export FNZORC="'igbp'"
 export FNAISC="'IMS-NIC.blended.ice.monthly.clim.grb'"
 export LDEBUG=.false.
+
+# Land IAU defaults
+export DO_LAND_IAU=.false.
+export LAND_IAU_FHRS=3,6,9
+export LAND_IAU_DELHRS=6
+export LAND_IAU_INC_FILES="'sfc_inc',''"
+export LSOIL_INCR=3
+export LAND_IAU_FILTER_INC=.false.
+export LAND_IAU_UPD_STC=.true.
+export LAND_IAU_UPD_SLC=.true.
+export LAND_IAU_DP_STCSMC_ADJ=.true.
+export LAND_IAU_MIN_T_INC=0.0001
 }
 
 # Add section for tiled grid namelist
@@ -1191,8 +1179,11 @@ export_ugwpv1() {
   esac
 
   if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
-  if [[ ${SEDI_SEMI} = .true. ]]; then export DT_ATMOS=$((DT_ATMOS/2)); fi
-  export DT_INNER=${DT_ATMOS}
+  if [[ ${SEDI_SEMI} = .false. ]]; then 
+    export DT_INNER=$((DT_ATMOS/2))
+  else 
+    export DT_INNER=${DT_ATMOS}
+  fi
   export default_dt_atmos=0
 }
 
@@ -1319,6 +1310,7 @@ export_ww3() {
   WW3_DTPNT="$(printf "%02d" $(( WW3_OUTDTHR*3600 )) )"
   export WW3_DTFLD
   export WW3_DTPNT
+  export WW3_WLEV='F'
   export WW3_CUR='C'
   export WW3_ICE='C'
   export WW3_IC1='F'
@@ -1763,6 +1755,7 @@ export_hafs_regional ()
   # default hafs with no ice
   export WW3_DOMAIN=natl_6m
   export WW3_MODDEF=mod_def.${WW3_DOMAIN}
+  export WW3_WLEV='F'
   export WW3_ICE='F'
   export WW3_OUTPARS="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
   export WW3_RSTFLDS=" "
