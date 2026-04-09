@@ -18,7 +18,7 @@ export_mpas_gfs
 export FHMAX=3
 export OUTPUT_FH="1 -1"
 
-export ATM_compute_tasks=12
+export ATM_compute_tasks=36
 export FV3_RUN=gfs_mpas_run.IN
 export CCPP_SUITE=MPAS_RRFS
 export INPUT_NML=control_gfs_mpas.nml.IN
