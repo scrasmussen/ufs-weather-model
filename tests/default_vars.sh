@@ -502,7 +502,7 @@ export_mpas() {
   #DJS2025 START: We don't need this for MPAS, but to setup the tests we do. CLEAN THIS UP!!!
   #Set defaults if ATMRES and DT_ATMOS are not set
   ATMRES=${ATMRES:-"C96"}
-  DT_ATMOS=${DT_ATMOS:-"1800"}
+  DT_ATMOS=${DT_ATMOS:-"720"}
 
   DAYS=1
   ENS_NUM=1
@@ -568,6 +568,8 @@ export_mpas() {
   ZSTANDARD_LEVEL=0
 
   DOMAINS_STACK_SIZE=3000000
+
+  ORO_FILENAME="none"
 }
 export_mpas_rrfs() {
   # RRFS agnostic MPAS settings
