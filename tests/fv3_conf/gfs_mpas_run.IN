@@ -3,10 +3,48 @@ mkdir INPUT RESTART
 
 # MPAS Dycore
 cp  @[INPUTDATA_ROOT]/MPAS/INPUT/@[MPAS_RESOLUTION]km/Global/* .
-cp  /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/120km/Global/tracer_table .
-cp  /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/120km/Global/stream_list.atmosphere.diag_phys .
-cp  /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/LANDUSE.TBL .
-cp  /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/GENPARM.TBL .
+echo "Time
+swdnb
+swdnbc
+swdnt
+swdntc
+swupb
+swupbc
+swupt
+swuptc
+lwdnb
+lwdnbc
+lwdnt
+lwdntc
+lwupb
+lwupbc
+lwupt
+lwuptc
+refl10cm
+rainncv
+raincv
+snowncv
+graupelncv
+rainnc
+rainc
+rainn
+frainnc
+snownc
+graupelnc
+re_cloud
+re_ice
+re_snow
+dusfc_ls
+dvsfc_ls
+dusfc_bl
+dvsfc_bl
+dusfc_ss
+dvsfc_ss
+dusfc_fd
+dvsfc_fd" > stream_list.atmosphere.diag_phys
+# cp  /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/LANDUSE.TBL .
+wget https://raw.githubusercontent.com/MPAS-Dev/MPAS-Data/v8.2/atmosphere/physics_wrf/files/LANDUSE.TBL
+cp  @[INPUTDATA_ROOT]/FV3_input_data/GENPARM.TBL .
 
 #photochemistry
 cp  @[INPUTDATA_ROOT]/FV3_fix/global_o3prdlos.f77 .
