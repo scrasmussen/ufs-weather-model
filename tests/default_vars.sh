@@ -570,6 +570,7 @@ export_mpas() {
   DOMAINS_STACK_SIZE=3000000
 
   ORO_FILENAME="none"
+  MPAS_ORO_DIR="none"
 }
 export_mpas_rrfs() {
   # RRFS agnostic MPAS settings

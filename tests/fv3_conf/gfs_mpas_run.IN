@@ -3,6 +3,15 @@ mkdir INPUT RESTART
 
 # MPAS Dycore
 cp  @[INPUTDATA_ROOT]/MPAS/INPUT/@[MPAS_RESOLUTION]km/Global/* .
+# Tracer/constituent list (ezxml), consumed by atmos_model.F90::get_tracers since the
+# feature/phys2dyn_radmp_gjf rebase replaced the old tracer_table parser. Not in the
+# Derecho RT input-data tree; repo-tracked here because it's fixed suite configuration,
+# not resolution-/case-dependent input data.
+cp  ${PATHRT}/parm/constituents.xml .
+# UGWP orography statistics for gwd_opt=2 (see tests/control_gfs_v17_mpas); skipped when ORO_FILENAME=none
+if [ "@[ORO_FILENAME]" != "none" ]; then
+  cp @[MPAS_ORO_DIR]/@[ORO_FILENAME] .
+fi
 echo "Time
 swdnb
 swdnbc
@@ -41,7 +50,19 @@ dvsfc_bl
 dusfc_ss
 dvsfc_ss
 dusfc_fd
-dvsfc_fd" > stream_list.atmosphere.diag_phys
+dvsfc_fd
+dusfcg
+dvsfcg
+dtaux3d
+dtauy3d
+dtaux3d_ls
+dtauy3d_ls
+dtaux3d_bl
+dtauy3d_bl
+dtaux3d_ss
+dtauy3d_ss
+dtaux3d_fd
+dtauy3d_fd" > stream_list.atmosphere.diag_phys
 # cp  /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/LANDUSE.TBL .
 wget https://raw.githubusercontent.com/MPAS-Dev/MPAS-Data/v8.2/atmosphere/physics_wrf/files/LANDUSE.TBL
 cp  @[INPUTDATA_ROOT]/FV3_input_data/GENPARM.TBL .
@@ -91,7 +112,7 @@ if [ $IMP_PHYSICS = 8 ]; then
   cp    @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qgV2.dat .
   cp    @[INPUTDATA_ROOT]/FV3_fix/freezeH2O.dat .
   cp    @[INPUTDATA_ROOT]/FV3_fix/CCN_ACTIVATE.BIN .
-  cp    /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/physics/thompson/* .
+  # cp    /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/physics/thompson/* .   # Hera-only path; CCPP mp_thompson reads the FV3_fix files copied above
 fi
 
 #TEMPO
@@ -101,7 +122,7 @@ if [ $IMP_PHYSICS = 88 ]; then
   cp    @[INPUTDATA_ROOT]/FV3_input_data_TEMPO/MP_TEMPO_QRacrQG.dat .
   cp    @[INPUTDATA_ROOT]/FV3_input_data_TEMPO/MP_TEMPO_HAILAWARE_QRacrQG.dat .
   cp    @[INPUTDATA_ROOT]/FV3_input_data_TEMPO/MP_TEMPO_QRacrQS.dat .
-  cp    /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/physics/tempo/* .
+  # cp    /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/physics/tempo/* .   # Hera-only path; CCPP mp_tempo reads the FV3_fix files copied above
 fi
 
 #prognostic aerosols
