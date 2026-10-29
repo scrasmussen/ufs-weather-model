@@ -653,7 +653,10 @@ export_mpas_gfs() {
   DO_UGWP_v1=.true.
   DO_UGWP_v1_W_GFSLDRAG=.true.
   LDIAG_UGWP=.false.
-  
+
+  # NSST spin-up, as in FV3 GFSv17 (control_p8); MPAS ICs carry no NSST state
+  NSTF_NAME=2,1,0,0,0
+
   # Stochastic physics
   export_mpas_stochy
 
